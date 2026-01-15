@@ -57,7 +57,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        
+
         Gate::authorize('view', $product);
         return view('products.show', compact('product'));
     }
@@ -74,9 +74,10 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,  Product $product)
+    public function update(Request $request, Product $product)
     {
-        Gate::authorize('create', $product);
+        Gate::authorize('update', $product);
+
         $validated = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
