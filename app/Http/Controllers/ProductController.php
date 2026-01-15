@@ -14,6 +14,7 @@ class ProductController extends Controller
     public function index()
     {
         Gate::authorize('viewAny', Product::class);
+
         $products = Product::with('user')->get();
         return view('products.index', compact('products'));
     }
@@ -44,7 +45,7 @@ class ProductController extends Controller
             'name'     => $validated['name'],
             'price'    => $validated['price'],
             'user_id'  => $request->user()->id,
-            'is_public' => $request->has('is_public'),
+            'is_public'=> $request->has('is_public'),
         ]);
 
         return redirect()
@@ -57,7 +58,6 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-
         Gate::authorize('view', $product);
         return view('products.show', compact('product'));
     }
@@ -74,10 +74,9 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request,  Product $product)
     {
-        Gate::authorize('update', $product);
-
+        Gate::authorize('create', $product);
         $validated = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
@@ -100,8 +99,8 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         Gate::authorize('delete', $product);
+        
         $product->delete();
-
         return redirect()
             ->route('products.index')
             ->with('status', 'Produit supprimé avec succès.');

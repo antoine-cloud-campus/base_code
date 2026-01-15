@@ -11,8 +11,8 @@ class LogRequestMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $userAgent = $request->header('User-Agent');
-
+        $userAgent=$request->header('User-Agent');
+        
         Log::info('Request User-Agent', [
             'user-agent' => $userAgent,
             'ip' => $request->ip(),
@@ -20,6 +20,7 @@ class LogRequestMiddleware
             'method' => $request->method(),
             'user_id' => optional($request->user())->id,
         ]);
+        
         return $next($request);
     }
 }
