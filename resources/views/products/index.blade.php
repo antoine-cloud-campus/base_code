@@ -15,34 +15,34 @@
 
                     <ul class="mt-4 space-y-2">
                         @foreach ($products as $product)
-                            <li class="border-b pb-2">
-                                <strong>{{ $product->name }}</strong>
-                                — {{ $product->price }} €
-                                — {{ $product->is_public ? 'Public' : 'Privé' }} 
-                                @can('view-product', $product)
-                                <br />
-                                <a href="{{ route('products.show', $product) }}" class="ml-2 text-blue-600 underline">
-                                    Voir
-                                </a>
-                                @endcan
-                                <br />
-                                @can('manage-product', $product)
-                                    {{-- Modifier --}}
-                                    <a href="{{ route('products.edit', $product) }}" class="ml-2 text-green-600 underline">
-                                        Modifier
-                                    </a>
+                        <li class="border-b pb-2">
+                            <strong>{{ $product->name }}</strong>
+                            — {{ $product->price }} €
+                            — {{ $product->is_public ? 'Public' : 'Privé' }}
+                            <br />
+                            @can('view', $product)
+                            <a href="{{ route('products.show', $product) }}" class="ml-2 text-blue-600 underline">
+                                Voir
+                            </a>
+                            @endcan
+                            <br />
+                            @can('update', $product)
+                            {{-- Modifier --}}
+                            <a href="{{ route('products.edit', $product) }}" class="ml-2 text-green-600 underline">
+                                Modifier
+                            </a>
 
-                                    {{-- Supprimer --}}
-                                    <form action="{{ route('products.destroy', $product) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="ml-2 text-red-600 underline"
-                                            onclick="return confirm('Supprimer ce produit ?')">
-                                            Supprimer
-                                        </button>
-                                    </form>
-                                @endcan
-                            </li>
+                            @endcan
+                            @can('delete', $product)
+                            {{-- Supprimer --}}
+                            <form action="{{ route('products.destroy', $product) }}" method="POST" class="inline">
+                                @csrf
+                                @@ -38,6 +42,7 @@
+                                Supprimer
+                                </button>
+                            </form>
+                            @endcan
+                        </li>
                         @endforeach
                     </ul>
                 </div>
